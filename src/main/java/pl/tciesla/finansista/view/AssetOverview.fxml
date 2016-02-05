@@ -12,6 +12,7 @@
         <columns>
           <TableColumn fx:id="assetNameColumn" prefWidth="75.0" text="Asset name" />
           <TableColumn fx:id="assetValueColumn" prefWidth="75.0" text="Asset value" />
+            <TableColumn fx:id="assetCategoryColumn" prefWidth="75.0" text="Asset category" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

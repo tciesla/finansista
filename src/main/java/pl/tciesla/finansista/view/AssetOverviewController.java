@@ -14,11 +14,14 @@ public class AssetOverviewController {
 	private TableColumn<Asset, String> assetNameColumn;
 	@FXML
 	private TableColumn<Asset, String> assetValueColumn;
+	@FXML
+	private TableColumn<Asset, String> assetCategoryColumn;
 	
 	@FXML
 	private void initialize() {
 		assetNameColumn.setCellValueFactory(cell -> cell.getValue().name());
 		assetValueColumn.setCellValueFactory(cell -> cell.getValue().value().asString());
+		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
 		assetTable.getItems().addAll(AssetDao.getInstance().fetchAll());
 	}
 	
