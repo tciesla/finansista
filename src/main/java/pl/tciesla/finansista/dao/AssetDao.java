@@ -32,5 +32,5 @@ public class AssetDao {
 	public ObservableList<Asset> fetchAll() {
 		return assets;
 	}
-
+	
 }

@@ -12,6 +12,10 @@ public class Asset {
 	private final StringProperty name;
 	private final ObjectProperty<BigDecimal> value;
 	private final ObjectProperty<Category> category;
+	
+	public Asset() {
+		this("", BigDecimal.ZERO, Category.CASH);
+	}
 
 	public Asset(String name, BigDecimal value, Category category) {
 		this.name = new SimpleStringProperty(name);

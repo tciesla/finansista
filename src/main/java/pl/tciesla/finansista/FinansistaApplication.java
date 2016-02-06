@@ -6,6 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import pl.tciesla.finansista.view.AssetOverviewController;
 
 public class FinansistaApplication extends Application {
 	
@@ -23,6 +24,9 @@ public class FinansistaApplication extends Application {
 		assetOverviewLoader.setLocation(FinansistaApplication.class.getResource("view/AssetOverview.fxml"));
 		AnchorPane assetOverview = assetOverviewLoader.load();
 		rootLayout.setCenter(assetOverview);
+		
+		AssetOverviewController controller = assetOverviewLoader.getController();
+		controller.setStage(primaryStage);
 		
 		Scene scene = new Scene(rootLayout);
 		primaryStage.setScene(scene);
