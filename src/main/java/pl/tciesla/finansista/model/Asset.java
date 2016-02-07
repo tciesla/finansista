@@ -2,11 +2,16 @@ package pl.tciesla.finansista.model;
 
 import java.math.BigDecimal;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+@XmlRootElement
+@XmlType(propOrder = {"name", "category", "value"})
 public class Asset {
 
 	private final StringProperty name;

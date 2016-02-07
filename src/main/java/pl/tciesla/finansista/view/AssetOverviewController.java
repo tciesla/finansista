@@ -16,7 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.FinansistaApplication;
-import pl.tciesla.finansista.dao.AssetDaoMemory;
+import pl.tciesla.finansista.dao.AssetDaoXml;
 import pl.tciesla.finansista.model.Asset;
 
 public class AssetOverviewController {
@@ -40,7 +40,7 @@ public class AssetOverviewController {
 		assetNameColumn.setCellValueFactory(cell -> cell.getValue().name());
 		assetValueColumn.setCellValueFactory(cell -> cell.getValue().value().asString());
 		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
-		assets.addAll(AssetDaoMemory.getInstance().fetchAll());
+		assets.addAll(AssetDaoXml.getInstance().fetchAll());
 		assetTable.getItems().addAll(assets);
 		calculateTotalAssetsValue();
 	}
@@ -75,7 +75,7 @@ public class AssetOverviewController {
 			
 			if (controller.isOkClicked()) {
 				assetTable.getItems().add(controller.getAsset());
-				AssetDaoMemory.getInstance().persist(controller.getAsset());
+				AssetDaoXml.getInstance().persist(controller.getAsset());
 				calculateTotalAssetsValue();
 			}
 			
@@ -108,8 +108,8 @@ public class AssetOverviewController {
 
 			if (controller.isOkClicked()) {
 				assetTable.getItems().clear();
-				AssetDaoMemory.getInstance().update(controller.getAsset());
-				assetTable.getItems().addAll(AssetDaoMemory.getInstance().fetchAll());
+				AssetDaoXml.getInstance().update(controller.getAsset());
+				assetTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
 				calculateTotalAssetsValue();
 			}
 
@@ -124,7 +124,7 @@ public class AssetOverviewController {
 		Asset selectedAsset = assetTable.getSelectionModel().getSelectedItem();
 		if (selectedAsset != null) { 
 			assetTable.getItems().remove(selectedAsset);
-			AssetDaoMemory.getInstance().delete(selectedAsset);
+			AssetDaoXml.getInstance().delete(selectedAsset);
 		}
 		calculateTotalAssetsValue();
 	}
