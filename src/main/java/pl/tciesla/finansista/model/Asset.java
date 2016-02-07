@@ -58,4 +58,30 @@ public class Asset {
 	public ObjectProperty<Category> category() {
 		return category;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name.get() == null) ? 0 : name.get().hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Asset other = (Asset) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.get().equals(other.name.get()))
+			return false;
+		return true;
+	}
+	
 }

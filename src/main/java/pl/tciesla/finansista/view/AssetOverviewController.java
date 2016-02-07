@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -20,6 +22,7 @@ import pl.tciesla.finansista.model.Asset;
 public class AssetOverviewController {
 	
 	private Stage primaryStage;
+	private ObservableList<Asset> assets = FXCollections.observableArrayList();
 	
 	@FXML
 	private TableView<Asset> assetTable;
@@ -37,7 +40,8 @@ public class AssetOverviewController {
 		assetNameColumn.setCellValueFactory(cell -> cell.getValue().name());
 		assetValueColumn.setCellValueFactory(cell -> cell.getValue().value().asString());
 		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
-		assetTable.getItems().addAll(AssetDaoMemory.getInstance().fetchAll());
+		assets.addAll(AssetDaoMemory.getInstance().fetchAll());
+		assetTable.getItems().addAll(assets);
 		calculateTotalAssetsValue();
 	}
 	
@@ -71,6 +75,7 @@ public class AssetOverviewController {
 			
 			if (controller.isOkClicked()) {
 				assetTable.getItems().add(controller.getAsset());
+				AssetDaoMemory.getInstance().persist(controller.getAsset());
 				calculateTotalAssetsValue();
 			}
 			
@@ -102,8 +107,9 @@ public class AssetOverviewController {
 			dialogStage.showAndWait();
 
 			if (controller.isOkClicked()) {
-				int selectedIndex = assetTable.getSelectionModel().getSelectedIndex();
-				assetTable.getItems().set(selectedIndex, controller.getAsset());
+				assetTable.getItems().clear();
+				AssetDaoMemory.getInstance().update(controller.getAsset());
+				assetTable.getItems().addAll(AssetDaoMemory.getInstance().fetchAll());
 				calculateTotalAssetsValue();
 			}
 
@@ -116,7 +122,10 @@ public class AssetOverviewController {
 	@FXML
 	private void handleDeleteButtonClicked() {
 		Asset selectedAsset = assetTable.getSelectionModel().getSelectedItem();
-		if (selectedAsset != null) assetTable.getItems().remove(selectedAsset);
+		if (selectedAsset != null) { 
+			assetTable.getItems().remove(selectedAsset);
+			AssetDaoMemory.getInstance().delete(selectedAsset);
+		}
 		calculateTotalAssetsValue();
 	}
 

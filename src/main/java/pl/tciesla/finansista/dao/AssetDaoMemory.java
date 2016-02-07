@@ -1,9 +1,9 @@
 package pl.tciesla.finansista.dao;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.Category;
 
@@ -11,13 +11,19 @@ public class AssetDaoMemory implements AssetDao {
 
 	private static AssetDaoMemory instance = null;
 	
-	private ObservableList<Asset> assets = FXCollections.observableArrayList();
+	private List<Asset> assets = new ArrayList<>();
 
 	protected AssetDaoMemory() {
-		// TODO: remove sample assets
+		// Sample assets
 		assets.add(new Asset("Cash in wallet", new BigDecimal("1000.00"), Category.CASH));
-		assets.add(new Asset("US Gov. Bonds", new BigDecimal("25000.00"), Category.BONDS));
-		assets.add(new Asset("2500 Microsoft shares", new BigDecimal("42300.25"), Category.STOCK));
+		assets.add(new Asset("Cash in secure place", new BigDecimal("5000.00"), Category.CASH));
+		assets.add(new Asset("2500 Microsoft shares", new BigDecimal("2000.00"), Category.STOCK));
+		assets.add(new Asset("1500 Facebook shares", new BigDecimal("32000.50"), Category.STOCK));
+		assets.add(new Asset("Pure gold 100g", new BigDecimal("10000.55"), Category.GOODS));
+		assets.add(new Asset("My personal computer", new BigDecimal("4000.00"), Category.GOODS));
+		assets.add(new Asset("Steves personal load", new BigDecimal("2500.00"), Category.RECEIVABLES));
+		assets.add(new Asset("Deposit in Bank of America", new BigDecimal("25000.00"), Category.DEPOSITS));
+		assets.add(new Asset("Deposit in Bank of China", new BigDecimal("4500.00"), Category.DEPOSITS));
 	}
 
 	public static synchronized AssetDaoMemory getInstance() {
@@ -30,8 +36,27 @@ public class AssetDaoMemory implements AssetDao {
 	}
 
 	@Override
-	public ObservableList<Asset> fetchAll() {
+	public List<Asset> fetchAll() {
 		return assets;
+	}
+
+	@Override
+	public void persist(Asset asset) {
+		assets.add(asset);
+	}
+	
+	@Override
+	public void update(Asset asset) {
+		for (int i = 0; i < assets.size(); i++) {
+			if (assets.get(i).equals(asset)) {
+				assets.set(i, asset);
+			}
+		}
+	}
+
+	@Override
+	public void delete(Asset asset) {
+		assets.remove(asset);
 	}
 	
 }
