@@ -1,17 +1,20 @@
 package pl.tciesla.finansista.view;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.FinansistaApplication;
-import pl.tciesla.finansista.dao.AssetDao;
+import pl.tciesla.finansista.dao.AssetDaoMemory;
 import pl.tciesla.finansista.model.Asset;
 
 public class AssetOverviewController {
@@ -26,13 +29,22 @@ public class AssetOverviewController {
 	private TableColumn<Asset, String> assetValueColumn;
 	@FXML
 	private TableColumn<Asset, String> assetCategoryColumn;
+	@FXML
+	private Label assetsTotalValueLabel;
 	
 	@FXML
 	private void initialize() {
 		assetNameColumn.setCellValueFactory(cell -> cell.getValue().name());
 		assetValueColumn.setCellValueFactory(cell -> cell.getValue().value().asString());
 		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
-		assetTable.getItems().addAll(AssetDao.getInstance().fetchAll());
+		assetTable.getItems().addAll(AssetDaoMemory.getInstance().fetchAll());
+		calculateTotalAssetsValue();
+	}
+	
+	private void calculateTotalAssetsValue() {
+		BigDecimal totalValue = assetTable.getItems().stream().map(Asset::getValue)
+				.reduce(BigDecimal.ZERO, BigDecimal::add);
+		assetsTotalValueLabel.setText(totalValue.setScale(2, RoundingMode.HALF_EVEN).toString());
 	}
 	
 	@FXML
@@ -59,6 +71,7 @@ public class AssetOverviewController {
 			
 			if (controller.isOkClicked()) {
 				assetTable.getItems().add(controller.getAsset());
+				calculateTotalAssetsValue();
 			}
 			
 		} catch (IOException e) {
@@ -91,6 +104,7 @@ public class AssetOverviewController {
 			if (controller.isOkClicked()) {
 				int selectedIndex = assetTable.getSelectionModel().getSelectedIndex();
 				assetTable.getItems().set(selectedIndex, controller.getAsset());
+				calculateTotalAssetsValue();
 			}
 
 		} catch (IOException e) {
@@ -103,6 +117,7 @@ public class AssetOverviewController {
 	private void handleDeleteButtonClicked() {
 		Asset selectedAsset = assetTable.getSelectionModel().getSelectedItem();
 		if (selectedAsset != null) assetTable.getItems().remove(selectedAsset);
+		calculateTotalAssetsValue();
 	}
 
 	public Stage getStage() {
