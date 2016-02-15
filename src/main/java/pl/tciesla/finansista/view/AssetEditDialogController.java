@@ -8,7 +8,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.Category;
+import pl.tciesla.finansista.model.AssetCategory;
 
 public class AssetEditDialogController {
 	
@@ -21,11 +21,11 @@ public class AssetEditDialogController {
 	@FXML
 	private TextField assetValueField;
 	@FXML
-	private ComboBox<Category> assetCategoryBox;
+	private ComboBox<AssetCategory> assetCategoryBox;
 	
 	@FXML
 	private void initialize() {
-		assetCategoryBox.getItems().setAll(Category.values());
+		assetCategoryBox.getItems().setAll(AssetCategory.values());
 	}
 	
 	@FXML

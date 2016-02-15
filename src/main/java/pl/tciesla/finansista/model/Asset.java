@@ -16,13 +16,13 @@ public class Asset {
 
 	private final StringProperty name;
 	private final ObjectProperty<BigDecimal> value;
-	private final ObjectProperty<Category> category;
+	private final ObjectProperty<AssetCategory> category;
 	
 	public Asset() {
-		this("", BigDecimal.ZERO, Category.CASH);
+		this("", BigDecimal.ZERO, AssetCategory.CASH);
 	}
 
-	public Asset(String name, BigDecimal value, Category category) {
+	public Asset(String name, BigDecimal value, AssetCategory category) {
 		this.name = new SimpleStringProperty(name);
 		this.value = new SimpleObjectProperty<>(value);
 		this.category = new SimpleObjectProperty<>(category);
@@ -52,15 +52,15 @@ public class Asset {
 		return value;
 	}
 	
-	public Category getCategory() {
+	public AssetCategory getCategory() {
 		return category.get();
 	}
 	
-	public void setCategory(Category category) {
+	public void setCategory(AssetCategory category) {
 		this.category.set(category);
 	}
 	
-	public ObjectProperty<Category> category() {
+	public ObjectProperty<AssetCategory> category() {
 		return category;
 	}
 
