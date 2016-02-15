@@ -19,9 +19,10 @@ import pl.tciesla.finansista.FinansistaApplication;
 import pl.tciesla.finansista.dao.AssetDaoXml;
 import pl.tciesla.finansista.model.Asset;
 
-public class AssetOverviewController {
+public class AssetsOverviewController {
 	
-	private Stage primaryStage;
+	private Stage stage;
+	
 	private ObservableList<Asset> assets = FXCollections.observableArrayList();
 	
 	@FXML
@@ -63,7 +64,7 @@ public class AssetOverviewController {
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("New asset");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(primaryStage);
+			dialogStage.initOwner(stage);
 			
 			AssetEditDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -96,7 +97,7 @@ public class AssetOverviewController {
 			Stage dialogStage = new Stage();
 			dialogStage.setTitle("New asset");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(primaryStage);
+			dialogStage.initOwner(stage);
 
 			AssetEditDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
@@ -130,11 +131,11 @@ public class AssetOverviewController {
 	}
 
 	public Stage getStage() {
-		return primaryStage;
+		return stage;
 	}
 
 	public void setStage(Stage stage) {
-		this.primaryStage = stage;
+		this.stage = stage;
 	}
 
 }
