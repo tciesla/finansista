@@ -84,6 +84,7 @@ public class FinansistaApplication extends Application {
 		Tab tab = new Tab(ASSETS_TAB_TITLE);
 		tab.setContent(assetsOverviewPane);
 		tabPane.getTabs().add(tab);
+		tabPane.getSelectionModel().select(tab);
 
 		AssetsOverviewController controller = loader.getController();
 		controller.setStage(stage);
