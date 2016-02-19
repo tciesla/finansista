@@ -1,6 +1,7 @@
 package pl.tciesla.finansista.dao;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.JAXBContext;
@@ -51,7 +52,11 @@ public class AssetDaoXml implements AssetDao {
 	public List<Asset> fetchAll() {
 		try {
 			AssetListWrapper wrapper = (AssetListWrapper) unmarshaller.unmarshal(assetsFile);
-			return wrapper.getAssets();
+			List<Asset> assets = wrapper.getAssets();
+			Collections.sort(assets, (a1, a2) -> {
+				return a2.getValue().compareTo(a1.getValue());
+			});
+			return assets;
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,6 +86,7 @@ public class AssetDaoXml implements AssetDao {
 					assets.set(i, asset);
 				}
 			}
+			
 			wrapper.setAssets(assets);
 			marshaller.marshal(wrapper, assetsFile);
 		} catch (JAXBException e) {
