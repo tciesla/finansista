@@ -79,9 +79,9 @@
       </TableView>
       <ButtonBar layoutX="15.0" layoutY="314.0" prefHeight="40.0" prefWidth="570.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
         <buttons>
-          <Button mnemonicParsing="false" text="New" />
-            <Button mnemonicParsing="false" text="Edit" />
-            <Button mnemonicParsing="false" text="Delete" />
+          <Button mnemonicParsing="false" onAction="#handleNewIncomeButton" text="New" />
+            <Button mnemonicParsing="false" onAction="#handleEditIncomeButton" text="Edit" />
+            <Button mnemonicParsing="false" onAction="#handleDeleteIncomeButton" text="Delete" />
         </buttons>
       </ButtonBar>
    </children>

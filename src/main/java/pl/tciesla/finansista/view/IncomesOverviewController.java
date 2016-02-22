@@ -45,6 +45,25 @@ public class IncomesOverviewController {
 		incomeDateColumn.setStyle("-fx-alignment: CENTER;");
 		incomesTableView.getItems().addAll(incomes);
 	}
+	
+	@FXML
+	private void handleNewIncomeButton() {
+		System.out.println("Clicked new income!");
+	}
+	
+	@FXML
+	private void handleEditIncomeButton() {
+		System.out.println("Clicked edit income!");
+	}
+	
+	@FXML
+	private void handleDeleteIncomeButton() {
+		Income selectedIncome = incomesTableView.getSelectionModel().getSelectedItem();
+		if (selectedIncome != null) {
+			System.out.println("Deleting income: " + selectedIncome);
+			incomesTableView.getItems().remove(selectedIncome);
+		}
+	}
 
 	public Stage getStage() {
 		return stage;

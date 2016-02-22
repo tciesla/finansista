@@ -55,7 +55,7 @@ public class Income {
 
 	@Override
 	public String toString() {
-		return "Income [name=" + name + ", value=" + value + ", date=" + date + "]";
+		return "Income [name=" + name.get() + ", value=" + value.get() + ", date=" + date.get() + "]";
 	}
 
 	@Override
