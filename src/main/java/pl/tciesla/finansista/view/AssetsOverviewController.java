@@ -39,8 +39,11 @@ public class AssetsOverviewController {
 	@FXML
 	private void initialize() {
 		assetNameColumn.setCellValueFactory(cell -> cell.getValue().name());
+		assetNameColumn.setStyle("-fx-alignment: CENTER;");
 		assetValueColumn.setCellValueFactory(cell -> cell.getValue().value().asString());
+		assetValueColumn.setStyle("-fx-alignment: CENTER;");
 		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
+		assetCategoryColumn.setStyle("-fx-alignment: CENTER;");
 		assets.addAll(AssetDaoXml.getInstance().fetchAll());
 		assetTable.getItems().addAll(assets);
 		calculateTotalAssetsValue();
