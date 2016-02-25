@@ -1,6 +1,6 @@
 package pl.tciesla.finansista.model;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,7 +13,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class AssetListWrapper {
 
 	@XmlElement(name = "asset")
-	private List<Asset> assets = new ArrayList<>();
+	private List<Asset> assets;
+	
+	public AssetListWrapper() {
+		assets = new LinkedList<>();
+	}
+
+	public AssetListWrapper(List<Asset> assets) {
+		this.assets = assets;
+	}
 
 	public List<Asset> getAssets() {
 		return assets;

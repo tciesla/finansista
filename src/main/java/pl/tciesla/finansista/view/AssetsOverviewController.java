@@ -125,8 +125,8 @@ public class AssetsOverviewController {
 
 	@FXML
 	private void handleDeleteButtonClicked() {
-		Asset selectedAsset = assetTable.getSelectionModel().getSelectedItem();
-		if (selectedAsset != null) { 
+		int selectedAsset = assetTable.getSelectionModel().getSelectedIndex();
+		if (selectedAsset != -1) { 
 			assetTable.getItems().remove(selectedAsset);
 			AssetDaoXml.getInstance().delete(selectedAsset);
 		}

@@ -3,6 +3,7 @@ package pl.tciesla.finansista.model;
 import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import javafx.beans.property.ObjectProperty;
@@ -14,6 +15,7 @@ import javafx.beans.property.StringProperty;
 @XmlType(propOrder = {"name", "category", "value"})
 public class Asset {
 
+	private Integer id;
 	private final StringProperty name;
 	private final ObjectProperty<BigDecimal> value;
 	private final ObjectProperty<AssetCategory> category;
@@ -26,6 +28,15 @@ public class Asset {
 		this.name = new SimpleStringProperty(name);
 		this.value = new SimpleObjectProperty<>(value);
 		this.category = new SimpleObjectProperty<>(category);
+	}
+
+	@XmlTransient
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {

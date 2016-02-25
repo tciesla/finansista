@@ -65,7 +65,7 @@ public class AssetEditDialogController {
 	public void setAsset(Asset asset) {
 		this.asset = asset;
 		assetNameField.setText(asset.getName());
-		assetValueField.setText(asset.getValue().setScale(2, RoundingMode.HALF_EVEN).toString());
+		assetValueField.setText(asset.getValue().setScale(2, RoundingMode.HALF_UP).toString());
 		assetCategoryBox.getSelectionModel().select(asset.getCategory());
 	}
 
