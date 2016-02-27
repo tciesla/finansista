@@ -12,23 +12,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.tciesla.finansista.view.AssetsOverviewController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.tciesla.finansista.view.AssetsOverviewController">
    <children>
-      <VBox layoutX="14.0" layoutY="16.0" prefHeight="400.0" prefWidth="600.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox layoutX="14.0" layoutY="16.0" prefHeight="500.0" prefWidth="700.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="10.0" prefWidth="580.0" spacing="10.0">
                <children>
-                  <Label text="Total assets value" />
-                  <Label fx:id="assetsTotalValueLabel" text="value">
+                  <Label text="Assets value" />
+                  <Label fx:id="assetsValueLabel" text="unknow">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <TableView fx:id="assetTable" prefHeight="139.0" prefWidth="550.0">
+            <TableView fx:id="assetsTable" prefHeight="219.0" prefWidth="680.0">
               <columns>
-                <TableColumn fx:id="assetNameColumn" prefWidth="75.0" text="Name" />
+                <TableColumn fx:id="assetNameColumn" prefWidth="75.0" text="Asset" />
                 <TableColumn fx:id="assetValueColumn" prefWidth="75.0" text="Value" />
                   <TableColumn fx:id="assetCategoryColumn" prefWidth="75.0" text="Category" />
                   <TableColumn fx:id="assetShareColumn" prefWidth="75.0" text="Share" />
@@ -37,19 +37,19 @@
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                </columnResizePolicy>
             </TableView>
-            <HBox prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+            <HBox prefHeight="185.0" prefWidth="680.0" spacing="10.0">
                <children>
-                  <TableView prefHeight="164.0" prefWidth="272.0">
+                  <TableView fx:id="categoriesTable" prefHeight="150.0" prefWidth="342.0">
                     <columns>
-                      <TableColumn prefWidth="75.0" text="Category" />
-                      <TableColumn prefWidth="75.0" text="Value" />
-                        <TableColumn prefWidth="75.0" text="Share" />
+                      <TableColumn fx:id="categoryNameColumn" prefWidth="75.0" text="Category" />
+                      <TableColumn fx:id="categoryValueColumn" prefWidth="75.0" text="Value" />
+                        <TableColumn fx:id="categoryShareColumn" prefWidth="75.0" text="Share" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <PieChart fx:id="categoryPieChart" prefHeight="150.0" prefWidth="298.0" />
+                  <PieChart fx:id="categoriesValuePieChart" labelLineLength="10.0" labelsVisible="false" legendSide="LEFT" prefHeight="150.0" prefWidth="389.0" />
                </children>
             </HBox>
             <ButtonBar prefHeight="40.0" prefWidth="200.0">
