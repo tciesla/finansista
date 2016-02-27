@@ -19,6 +19,7 @@ public class Asset {
 	private final StringProperty name;
 	private final ObjectProperty<BigDecimal> value;
 	private final ObjectProperty<AssetCategory> category;
+	private final ObjectProperty<BigDecimal> share;
 	
 	public Asset() {
 		this("", BigDecimal.ZERO, AssetCategory.CASH);
@@ -28,6 +29,7 @@ public class Asset {
 		this.name = new SimpleStringProperty(name);
 		this.value = new SimpleObjectProperty<>(value);
 		this.category = new SimpleObjectProperty<>(category);
+		this.share = new SimpleObjectProperty<>(BigDecimal.ZERO);
 	}
 
 	@XmlTransient
@@ -73,6 +75,19 @@ public class Asset {
 	
 	public ObjectProperty<AssetCategory> category() {
 		return category;
+	}
+	
+	@XmlTransient
+	public BigDecimal getShare() {
+		return share.get();
+	}
+	
+	public void setShare(BigDecimal share) {
+		this.share.set(share);
+	}
+	
+	public ObjectProperty<BigDecimal> share() {
+		return share;
 	}
 
 	@Override

@@ -34,6 +34,8 @@ public class AssetsOverviewController {
 	@FXML
 	private TableColumn<Asset, String> assetCategoryColumn;
 	@FXML
+	private TableColumn<Asset, String> assetShareColumn;
+	@FXML
 	private Label assetsTotalValueLabel;
 	
 	@FXML
@@ -44,15 +46,22 @@ public class AssetsOverviewController {
 		assetValueColumn.setStyle("-fx-alignment: CENTER;");
 		assetCategoryColumn.setCellValueFactory(cell -> cell.getValue().category().asString());
 		assetCategoryColumn.setStyle("-fx-alignment: CENTER;");
+		assetShareColumn.setCellValueFactory(cell -> cell.getValue().share().asString());
+		assetShareColumn.setStyle("-fx-alignment: CENTER;");
 		assets.addAll(AssetDaoXml.getInstance().fetchAll());
 		assetTable.getItems().addAll(assets);
-		calculateTotalAssetsValue();
+		calculateTotalAssetsValueAndShares();
 	}
 	
-	private void calculateTotalAssetsValue() {
+	private void calculateTotalAssetsValueAndShares() {
 		BigDecimal totalValue = assetTable.getItems().stream().map(Asset::getValue)
 				.reduce(BigDecimal.ZERO, BigDecimal::add);
 		assetsTotalValueLabel.setText(totalValue.setScale(2, RoundingMode.HALF_EVEN).toString());
+		assetTable.getItems().stream().forEach(asset -> {
+			BigDecimal value = asset.getValue();
+			BigDecimal share = value.divide(totalValue, 4, RoundingMode.HALF_UP);
+			asset.setShare(share.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+		});
 	}
 	
 	@FXML
@@ -80,7 +89,7 @@ public class AssetsOverviewController {
 			if (controller.isOkClicked()) {
 				assetTable.getItems().add(controller.getAsset());
 				AssetDaoXml.getInstance().persist(controller.getAsset());
-				calculateTotalAssetsValue();
+				calculateTotalAssetsValueAndShares();
 			}
 			
 		} catch (IOException e) {
@@ -114,7 +123,7 @@ public class AssetsOverviewController {
 				assetTable.getItems().clear();
 				AssetDaoXml.getInstance().update(controller.getAsset());
 				assetTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
-				calculateTotalAssetsValue();
+				calculateTotalAssetsValueAndShares();
 			}
 
 		} catch (IOException e) {
@@ -130,7 +139,7 @@ public class AssetsOverviewController {
 			assetTable.getItems().remove(selectedAsset);
 			AssetDaoXml.getInstance().delete(selectedAsset);
 		}
-		calculateTotalAssetsValue();
+		calculateTotalAssetsValueAndShares();
 	}
 
 	public Stage getStage() {
