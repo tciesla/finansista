@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -25,6 +26,14 @@ public class AssetsOverviewController {
 	
 	private ObservableList<Asset> assets = FXCollections.observableArrayList();
 	
+	ObservableList<PieChart.Data> pieChartData =
+            FXCollections.observableArrayList(
+            new PieChart.Data("Grapefruit", 13),
+            new PieChart.Data("Oranges", 25),
+            new PieChart.Data("Plums", 10),
+            new PieChart.Data("Pears", 22),
+            new PieChart.Data("Apples", 30));
+	
 	@FXML
 	private TableView<Asset> assetTable;
 	@FXML
@@ -37,6 +46,8 @@ public class AssetsOverviewController {
 	private TableColumn<Asset, String> assetShareColumn;
 	@FXML
 	private Label assetsTotalValueLabel;
+	@FXML
+	private PieChart categoryPieChart;
 	
 	@FXML
 	private void initialize() {
@@ -51,6 +62,7 @@ public class AssetsOverviewController {
 		assets.addAll(AssetDaoXml.getInstance().fetchAll());
 		assetTable.getItems().addAll(assets);
 		calculateTotalAssetsValueAndShares();
+		categoryPieChart.setData(pieChartData);
 	}
 	
 	private void calculateTotalAssetsValueAndShares() {
