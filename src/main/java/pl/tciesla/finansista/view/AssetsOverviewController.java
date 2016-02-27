@@ -1,9 +1,12 @@
 package pl.tciesla.finansista.view;
 
+import static java.math.RoundingMode.HALF_UP;
+
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import javafx.collections.FXCollections;
@@ -56,13 +59,13 @@ public class AssetsOverviewController {
 	
 	@FXML
 	private void initialize() {
-		
-		initializeAssetsTable();
-		initializeCategoriesTable();
-		initializeCategoriesPieChart();
+		initializeAssetsTableColumns();
+		initializeCategoriesTableColumns();
+		addAssetsTableListeners();
+		loadAssetsIntoAssetsTable();
 	}
 
-	private void initializeAssetsTable() {
+	private void initializeAssetsTableColumns() {
 		// asset name column
 		assetNameColumn.setCellValueFactory(c -> c.getValue().name());
 		assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
@@ -78,17 +81,9 @@ public class AssetsOverviewController {
 		// asset share column
 		assetShareColumn.setCellValueFactory(c -> c.getValue().share().asString());
 		assetShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// add listener that recalculates assets value and shares
-		assetsTable.getItems().addListener((ListChangeListener.Change<? extends Asset> c) -> {
-			calculateTotalAssetsValueAndShares();
-		});
-		
-		// fills assets table with data from XML file
-		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
 	}
 	
-	private void initializeCategoriesTable() {
+	private void initializeCategoriesTableColumns() {
 		// category name column
 		categoryNameColumn.setCellValueFactory(c -> c.getValue().name());
 		categoryNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
@@ -100,65 +95,115 @@ public class AssetsOverviewController {
 		// category share column
 		categoryShareColumn.setCellValueFactory(c -> c.getValue().share().asString());
 		categoryShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		Map<String, BigDecimal> categoryValues = new HashMap<>();
-		for (AssetCategory assetCategory : AssetCategory.values()) {
-			categoryValues.put(assetCategory.toString(), BigDecimal.ZERO);
-		}
-		for (Asset asset : AssetDaoXml.getInstance().fetchAll()) {
-			String key = asset.getCategory().toString();
-			BigDecimal oldValue = categoryValues.get(key);
-			BigDecimal newValue = oldValue.add(asset.getValue());
-			categoryValues.put(key, newValue);
-		}
-		
-		BigDecimal assetsValue = assetsTable.getItems().stream().map(Asset::getValue)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-		Map<String, BigDecimal> categoryShares = new HashMap<>();
-		for (AssetCategory assetCategory : AssetCategory.values()) {
-			BigDecimal categoryValue = categoryValues.get(assetCategory.toString());
-			BigDecimal share = categoryValue.divide(assetsValue, 4, RoundingMode.HALF_UP);
-			BigDecimal percentShare = share.multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP);
-			categoryShares.put(assetCategory.toString(), percentShare);
-		}
-		
-		for (AssetCategory assetCategory : AssetCategory.values()) {
-			AssetCategoryView assetCategoryView = new AssetCategoryView();
-			assetCategoryView.setName(assetCategory.toString());
-			assetCategoryView.setValue(categoryValues.get(assetCategory.toString()));
-			assetCategoryView.setShare(categoryShares.get(assetCategory.toString()));
-			categoriesTable.getItems().add(assetCategoryView);
-		}
-		categoriesTable.getItems().sort((c1, c2) -> c2.getValue().compareTo(c1.getValue()));
-		
 	}
 	
-	private void initializeCategoriesPieChart() {
-		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-		for (AssetCategoryView assetCategoryView : categoriesTable.getItems()) {
-			pieChartData.add(new PieChart.Data(assetCategoryView.name().get(), assetCategoryView.getValue().doubleValue()));
-		}
-		categoriesValuePieChart.setData(pieChartData);
+	private void addAssetsTableListeners() {
+		assetsTable.getItems().addListener((ListChangeListener.Change<? extends Asset> c) -> {
+			createOrUpdateAssetsValueAndShares();
+			createOrUpdateCategoriesTable();
+			createOrUpdateCategoriesPieChart();
+		});
 	}
 	
-	private void calculateTotalAssetsValueAndShares() {
-		BigDecimal totalValue = assetsTable.getItems().stream().map(Asset::getValue)
-				.reduce(BigDecimal.ZERO, BigDecimal::add);
-		assetsValueLabel.setText(totalValue.setScale(2, RoundingMode.HALF_EVEN).toString());
+	private void createOrUpdateAssetsValueAndShares() {
+		
+		// updates assetsValue label
+		BigDecimal assetsValue = assetsTable.getItems().stream()
+				.map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+		assetsValueLabel.setText(assetsValue.setScale(2, HALF_UP).toString());
+		
+		// updates shares in assets table
 		assetsTable.getItems().stream().forEach(asset -> {
 			BigDecimal value = asset.getValue();
-			BigDecimal share = value.divide(totalValue, 4, RoundingMode.HALF_UP);
-			asset.setShare(share.multiply(BigDecimal.valueOf(100)).setScale(2, RoundingMode.HALF_UP));
+			BigDecimal share = value.divide(assetsValue, 4, HALF_UP);
+			BigDecimal percent = share.multiply(BigDecimal.valueOf(100));
+			asset.setShare(percent.setScale(2, HALF_UP));
 		});
+	}
+
+	private void createOrUpdateCategoriesTable() {
+		Map<AssetCategory, BigDecimal> categoryValues = createCategoryValuesMap();
+		Map<AssetCategory, BigDecimal> categoryShares = createCategorySharesMap(categoryValues);
+		List<AssetCategoryView> assetCategoryViews = createAssetCategoryViews(categoryValues, categoryShares);
+		categoriesTable.getItems().clear();
+		categoriesTable.getItems().addAll(assetCategoryViews);
+	}
+
+	private Map<AssetCategory, BigDecimal> createCategoryValuesMap() {
+		
+		Map<AssetCategory, BigDecimal> categoryValues = new HashMap<>();
+		assetsTable.getItems().stream().forEach(asset -> {
+			AssetCategory category = asset.getCategory();
+			BigDecimal oldValue = categoryValues.get(category);
+			if (oldValue == null) categoryValues.put(category, BigDecimal.ZERO);
+			oldValue = categoryValues.get(category);
+			BigDecimal newValue = oldValue.add(asset.getValue());
+			categoryValues.put(category, newValue);
+		});
+		
+		return categoryValues;
+	}
+	
+	private Map<AssetCategory, BigDecimal> createCategorySharesMap(Map<AssetCategory, BigDecimal> categoryValues) {
+		
+		BigDecimal assetsValue = assetsTable.getItems().stream()
+				.map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		Map<AssetCategory, BigDecimal> categoryShares = new HashMap<>();
+		categoryValues.keySet().stream().forEach(assetCategory -> {
+			BigDecimal categoryValue = categoryValues.get(assetCategory);
+			BigDecimal share = categoryValue.divide(assetsValue, 4, HALF_UP);
+			BigDecimal percent = share.multiply(BigDecimal.valueOf(100));
+			categoryShares.put(assetCategory, percent.setScale(2, HALF_UP));
+		});
+		
+		return categoryShares;
+	}
+	
+	private List<AssetCategoryView> createAssetCategoryViews(
+			Map<AssetCategory, BigDecimal> categoryValues,
+			Map<AssetCategory, BigDecimal> categoryShares) {
+		
+		List<AssetCategoryView> assetCategoryViews = new LinkedList<>();
+		categoryValues.keySet().stream().forEach(assetCategory -> {
+			AssetCategoryView assetCategoryView = new AssetCategoryView();
+			assetCategoryView.setName(assetCategory.toString());
+			assetCategoryView.setValue(categoryValues.get(assetCategory));
+			assetCategoryView.setShare(categoryShares.get(assetCategory));
+			assetCategoryViews.add(assetCategoryView);
+		});
+		
+		// sort category view by value descending
+		assetCategoryViews.sort((v1, v2) -> v2.getValue().compareTo(v1.getValue()));
+		return assetCategoryViews;
+	}
+	
+	private void createOrUpdateCategoriesPieChart() {
+		
+		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+		categoriesTable.getItems().stream().forEach(view -> {
+			pieChartData.add(new PieChart.Data(view.getName(), view.getValue().doubleValue()));
+		});
+		categoriesValuePieChart.setData(pieChartData);
+		
+//		categoriesValuePieChart.getData().stream().forEach(data -> {
+//			String assetCategoryName = data.getName();
+//			String color = AssetCategoryColorMapper.getColor(assetCategoryName);
+//			data.getNode().setStyle("-fx-pie-color: " + color + ";");
+//		});
+		
+	}
+	
+	private void loadAssetsIntoAssetsTable() {
+		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
 	}
 	
 	@FXML
 	private void handleNewButtonClicked() {
 		
 		try {
-			
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(FinansistaApplication.class.getResource("view/AssetEditDialog.fxml"));
+			loader.setLocation(getClass().getResource("AssetEditDialog.fxml"));
 			AnchorPane editDialog = loader.load();
 			
 			Stage dialogStage = new Stage();
@@ -175,9 +220,8 @@ public class AssetsOverviewController {
 			dialogStage.showAndWait();
 			
 			if (controller.isOkClicked()) {
-				assetsTable.getItems().add(controller.getAsset());
 				AssetDaoXml.getInstance().persist(controller.getAsset());
-//				calculateTotalAssetsValueAndShares();
+				refreshAssetsInTable();
 			}
 			
 		} catch (IOException e) {
@@ -208,10 +252,8 @@ public class AssetsOverviewController {
 			dialogStage.showAndWait();
 
 			if (controller.isOkClicked()) {
-				assetsTable.getItems().clear();
 				AssetDaoXml.getInstance().update(controller.getAsset());
-				assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
-//				calculateTotalAssetsValueAndShares();
+				refreshAssetsInTable();
 			}
 
 		} catch (IOException e) {
@@ -224,10 +266,14 @@ public class AssetsOverviewController {
 	private void handleDeleteButtonClicked() {
 		int selectedAsset = assetsTable.getSelectionModel().getSelectedIndex();
 		if (selectedAsset != -1) { 
-			assetsTable.getItems().remove(selectedAsset);
 			AssetDaoXml.getInstance().delete(selectedAsset);
+			refreshAssetsInTable();
 		}
-//		calculateTotalAssetsValueAndShares();
+	}
+
+	private void refreshAssetsInTable() {
+		assetsTable.getItems().clear();
+		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
 	}
 
 	public Stage getStage() {

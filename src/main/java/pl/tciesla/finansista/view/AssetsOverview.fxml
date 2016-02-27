@@ -39,7 +39,7 @@
             </TableView>
             <HBox prefHeight="185.0" prefWidth="680.0" spacing="10.0">
                <children>
-                  <TableView fx:id="categoriesTable" prefHeight="150.0" prefWidth="342.0">
+                  <TableView fx:id="categoriesTable" prefHeight="181.0" prefWidth="277.0">
                     <columns>
                       <TableColumn fx:id="categoryNameColumn" prefWidth="75.0" text="Category" />
                       <TableColumn fx:id="categoryValueColumn" prefWidth="75.0" text="Value" />
@@ -49,7 +49,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <PieChart fx:id="categoriesValuePieChart" labelLineLength="10.0" labelsVisible="false" legendSide="LEFT" prefHeight="150.0" prefWidth="389.0" />
+                  <PieChart fx:id="categoriesValuePieChart" animated="false" clockwise="false" labelLineLength="10.0" labelsVisible="false" legendSide="LEFT" prefHeight="181.0" prefWidth="393.0" />
                </children>
             </HBox>
             <ButtonBar prefHeight="40.0" prefWidth="200.0">

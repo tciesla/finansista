@@ -15,6 +15,10 @@ public class AssetCategoryView {
 		this.name.set(name);
 	}
 	
+	public String getName() {
+		return name.get();
+	}
+	
 	public SimpleStringProperty name() {
 		return name;
 	}
