@@ -2,7 +2,8 @@ package pl.tciesla.finansista.model;
 
 public enum AssetCategory {
 
-	CASH("Cash"), DEPOSIT("Bank deposit"), BOND("Bond"), STOCK("Stock"), GOODS("Goods"), RECEIVABLE("Receivable");
+	CASH("Cash"), DEPOSIT("Bank deposit"), BOND("Bond"), STOCK("Stock"), GOODS("Goods"),
+		RECEIVABLE("Receivable"), REAL_ESTATE("Real estate");
 
 	private String name;
 
