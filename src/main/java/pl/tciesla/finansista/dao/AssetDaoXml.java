@@ -77,7 +77,7 @@ public class AssetDaoXml implements AssetDao {
 	public void delete(Integer id) {
 		try {
 			List<Asset> assets = fetchAll();
-			assets.remove(id);
+			assets.remove(id.intValue());
 			marshallAssets(assets);
 		} catch (JAXBException e) {
 			// TODO Auto-generated catch block
