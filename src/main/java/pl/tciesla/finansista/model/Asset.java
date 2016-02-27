@@ -94,7 +94,7 @@ public class Asset {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name.get() == null) ? 0 : name.get().hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 
@@ -107,10 +107,10 @@ public class Asset {
 		if (getClass() != obj.getClass())
 			return false;
 		Asset other = (Asset) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!name.get().equals(other.name.get()))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}
