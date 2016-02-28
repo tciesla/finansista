@@ -10,7 +10,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetListWrapper;
+import pl.tciesla.finansista.model.AssetsWrapper;
 
 public class AssetDaoXml implements AssetDao {
 	
@@ -26,7 +26,7 @@ public class AssetDaoXml implements AssetDao {
 
 	protected AssetDaoXml() {
 		try {
-			JAXBContext context = JAXBContext.newInstance(AssetListWrapper.class);
+			JAXBContext context = JAXBContext.newInstance(AssetsWrapper.class);
 			marshaller = context.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 			unmarshaller = context.createUnmarshaller();
@@ -39,7 +39,7 @@ public class AssetDaoXml implements AssetDao {
 
 	private void createEmptyFileIfNotExists() throws JAXBException {
 		if (!assetsFile.exists()) {
-			marshaller.marshal(new AssetListWrapper(), assetsFile);
+			marshaller.marshal(new AssetsWrapper(), assetsFile);
 		}
 	}
 	
@@ -58,7 +58,7 @@ public class AssetDaoXml implements AssetDao {
 	private void marshallAssets(List<Asset> assets) throws JAXBException {
 		assets.sort((a1, a2) -> a2.getValue().compareTo(a1.getValue()));
 		IntStream.range(0, assets.size()).forEach(i -> assets.get(i).setId(i));
-		marshaller.marshal(new AssetListWrapper(assets), assetsFile);
+		marshaller.marshal(new AssetsWrapper(assets), assetsFile);
 	}
 	
 	@Override
@@ -94,7 +94,7 @@ public class AssetDaoXml implements AssetDao {
 	@Override
 	public List<Asset> fetchAll() {
 		try {
-			AssetListWrapper wrapper = (AssetListWrapper) unmarshaller.unmarshal(assetsFile);
+			AssetsWrapper wrapper = (AssetsWrapper) unmarshaller.unmarshal(assetsFile);
 			List<Asset> assets = wrapper.getAssets();
 			assets.sort((a1, a2) -> a2.getValue().compareTo(a1.getValue()));
 			IntStream.range(0, assets.size()).forEach(i -> assets.get(i).setId(i));

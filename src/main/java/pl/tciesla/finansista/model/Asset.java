@@ -15,6 +15,8 @@ import javafx.beans.property.StringProperty;
 @XmlType(propOrder = {"name", "category", "value"})
 public class Asset {
 
+	private static final String INITIAL_NAME = "unknown";
+
 	private Integer id;
 	private final StringProperty name;
 	private final ObjectProperty<BigDecimal> value;
@@ -22,7 +24,7 @@ public class Asset {
 	private final ObjectProperty<BigDecimal> share;
 	
 	public Asset() {
-		this("", BigDecimal.ZERO, AssetCategory.CASH);
+		this(INITIAL_NAME, BigDecimal.ZERO, AssetCategory.CASH);
 	}
 
 	public Asset(String name, BigDecimal value, AssetCategory category) {
@@ -75,11 +77,6 @@ public class Asset {
 	
 	public ObjectProperty<AssetCategory> category() {
 		return category;
-	}
-	
-	@XmlTransient
-	public BigDecimal getShare() {
-		return share.get();
 	}
 	
 	public void setShare(BigDecimal share) {

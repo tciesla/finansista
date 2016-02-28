@@ -7,7 +7,7 @@ public enum AssetCategory {
 
 	private String name;
 
-	private AssetCategory(String name) {
+	AssetCategory(String name) {
 		this.name = name;
 	}
 

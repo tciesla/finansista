@@ -10,25 +10,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "assets")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AssetListWrapper {
+public class AssetsWrapper {
 
 	@XmlElement(name = "asset")
 	private List<Asset> assets;
 	
-	public AssetListWrapper() {
+	public AssetsWrapper() {
 		assets = new LinkedList<>();
 	}
 
-	public AssetListWrapper(List<Asset> assets) {
+	public AssetsWrapper(List<Asset> assets) {
 		this.assets = assets;
 	}
 
 	public List<Asset> getAssets() {
 		return assets;
-	}
-
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
 	}
 
 }
