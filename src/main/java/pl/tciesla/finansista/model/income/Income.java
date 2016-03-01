@@ -1,9 +1,10 @@
-package pl.tciesla.finansista.model;
+package pl.tciesla.finansista.model.income;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import javafx.beans.property.ObjectProperty;
@@ -17,6 +18,7 @@ public class Income {
 
     private static final String INITIAL_NAME = "unknown";
 
+    private Integer id;
     private StringProperty name;
 	private ObjectProperty<BigDecimal> value;
 	private ObjectProperty<LocalDate> date;
@@ -34,6 +36,15 @@ public class Income {
 		this.value = new SimpleObjectProperty<>(value);
 		this.date = new SimpleObjectProperty<>(date);
 	}
+
+    @XmlTransient
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name.get();

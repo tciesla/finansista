@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.model;
+package pl.tciesla.finansista.model.asset;
 
 import java.math.BigDecimal;
 

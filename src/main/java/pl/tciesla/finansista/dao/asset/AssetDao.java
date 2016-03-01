@@ -1,8 +1,9 @@
-package pl.tciesla.finansista.dao;
+package pl.tciesla.finansista.dao.asset;
 
 import java.util.List;
 
-import pl.tciesla.finansista.model.Asset;
+import pl.tciesla.finansista.dao.BaseDao;
+import pl.tciesla.finansista.model.asset.Asset;
 
 public interface AssetDao extends BaseDao<Asset, Integer> {
 
@@ -14,9 +15,6 @@ public interface AssetDao extends BaseDao<Asset, Integer> {
 
 	@Override
 	void delete(Integer id);
-
-	@Override
-	Asset fetch(Integer id);
 
 	@Override
 	List<Asset> fetchAll();

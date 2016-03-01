@@ -23,9 +23,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.FinansistaApplication;
-import pl.tciesla.finansista.dao.AssetDaoXml;
-import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetCategory;
+import pl.tciesla.finansista.dao.asset.AssetDaoXml;
+import pl.tciesla.finansista.model.asset.Asset;
+import pl.tciesla.finansista.model.asset.AssetCategory;
 
 public class AssetsOverviewController {
 	
@@ -181,9 +181,9 @@ public class AssetsOverviewController {
 	private void createOrUpdateCategoriesPieChart() {
 		
 		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-		categoriesTable.getItems().stream().forEach(view -> {
-			pieChartData.add(new PieChart.Data(view.getName(), view.getValue().doubleValue()));
-		});
+		categoriesTable.getItems().stream().forEach(view ->
+			pieChartData.add(new PieChart.Data(view.getName(), view.getValue().doubleValue()))
+		);
 		categoriesValuePieChart.setData(pieChartData);
 		
 //		categoriesValuePieChart.getData().stream().forEach(data -> {
