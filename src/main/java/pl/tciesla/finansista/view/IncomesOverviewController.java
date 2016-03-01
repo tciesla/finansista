@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.model.Income;
+import pl.tciesla.finansista.model.income.Income;
 
 public class IncomesOverviewController {
 

@@ -10,7 +10,5 @@ public interface BaseDao<E, K> {
 	
 	void delete(K id);
 	
-	E fetch(K id);
-	
 	List<E> fetchAll();
 }

@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.dao;
+package pl.tciesla.finansista.dao.asset;
 
 import java.io.File;
 import java.util.List;
@@ -9,14 +9,15 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetsWrapper;
+import pl.tciesla.finansista.model.asset.Asset;
+import pl.tciesla.finansista.model.asset.AssetsWrapper;
 
 public class AssetDaoXml implements AssetDao {
 	
 	private static AssetDaoXml instance = new AssetDaoXml();
-	
-	File assetsFile = new File("assets.xml");
+
+    // TODO change filename source (properties?)
+	private File assetsFile = new File("assets.xml");
 	private Marshaller marshaller;
 	private Unmarshaller unmarshaller;
 	
@@ -32,7 +33,7 @@ public class AssetDaoXml implements AssetDao {
 			unmarshaller = context.createUnmarshaller();
 			createEmptyFileIfNotExists();
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
+            // TODO use logger here
 			e.printStackTrace();
 		}
 	}
@@ -44,51 +45,24 @@ public class AssetDaoXml implements AssetDao {
 	}
 	
 	@Override
-	public void persist(Asset asset) {
-		try {
-			List<Asset> assets = fetchAll();
-			assets.add(asset);
-			marshallAssets(assets);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+    public void persist(Asset asset) {
+        List<Asset> assets = fetchAll();
+        assets.add(asset);
+        marshallAssets(assets);
 	}
 
-	private void marshallAssets(List<Asset> assets) throws JAXBException {
-		assets.sort((a1, a2) -> a2.getValue().compareTo(a1.getValue()));
-		IntStream.range(0, assets.size()).forEach(i -> assets.get(i).setId(i));
-		marshaller.marshal(new AssetsWrapper(assets), assetsFile);
-	}
-	
 	@Override
 	public void update(Asset asset) {
-		try {
-			List<Asset> assets = fetchAll();
-			assets.set(asset.getId(), asset);
-			marshallAssets(assets);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
+        List<Asset> assets = fetchAll();
+        assets.set(asset.getId(), asset);
+        marshallAssets(assets);
+    }
+
 	@Override
 	public void delete(Integer id) {
-		try {
-			List<Asset> assets = fetchAll();
-			assets.remove(id.intValue());
-			marshallAssets(assets);
-		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	
-	@Override
-	public Asset fetch(Integer id) {
-		List<Asset> assets = fetchAll();
-		return assets.size() > id ? assets.get(id) : null;
+        List<Asset> assets = fetchAll();
+        assets.remove(id.intValue());
+        marshallAssets(assets);
 	}
 
 	@Override
@@ -100,10 +74,21 @@ public class AssetDaoXml implements AssetDao {
 			IntStream.range(0, assets.size()).forEach(i -> assets.get(i).setId(i));
 			return assets;
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
+			// TODO use logger here
 			e.printStackTrace();
 		}
+		// TODO use empty list?
 		return null;
 	}
+
+    private void marshallAssets(List<Asset> assets) {
+        try {
+            assets.sort((a1, a2) -> a2.getValue().compareTo(a1.getValue()));
+            IntStream.range(0, assets.size()).forEach(i -> assets.get(i).setId(i));
+            marshaller.marshal(new AssetsWrapper(assets), assetsFile);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.model;
+package pl.tciesla.finansista.model.asset;
 
 public enum AssetCategory {
 
