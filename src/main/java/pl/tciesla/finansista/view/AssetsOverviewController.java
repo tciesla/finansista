@@ -4,11 +4,13 @@ import static java.math.RoundingMode.HALF_UP;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -71,7 +73,7 @@ public class AssetsOverviewController {
 		assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// asset value column
-		assetValueColumn.setCellValueFactory(c -> c.getValue().value().asString());
+        assetValueColumn.setCellValueFactory(c -> new SimpleStringProperty(toCurrency(c.getValue().getValue())));
 		assetValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// asset category column
@@ -89,7 +91,7 @@ public class AssetsOverviewController {
 		categoryNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// category value column
-		categoryValueColumn.setCellValueFactory(c -> c.getValue().value().asString());
+        categoryValueColumn.setCellValueFactory(c -> new SimpleStringProperty(toCurrency(c.getValue().getValue())));
 		categoryValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// category share column
@@ -110,7 +112,7 @@ public class AssetsOverviewController {
 		// updates assetsValue label
 		BigDecimal assetsValue = assetsTable.getItems().stream()
 				.map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
-		assetsValueLabel.setText(assetsValue.setScale(2, HALF_UP).toString());
+		assetsValueLabel.setText(toCurrency(assetsValue.setScale(2, HALF_UP)));
 		
 		// updates shares in assets table
 		assetsTable.getItems().stream().forEach(asset -> {
@@ -121,7 +123,14 @@ public class AssetsOverviewController {
 		});
 	}
 
-	private void createOrUpdateCategoriesTable() {
+    private String toCurrency(BigDecimal value) {
+        NumberFormat currencyInstance = NumberFormat.getCurrencyInstance();
+        currencyInstance.setMinimumFractionDigits(2);
+        currencyInstance.setMaximumFractionDigits(2);
+        return currencyInstance.format(value);
+    }
+
+    private void createOrUpdateCategoriesTable() {
 		Map<AssetCategory, BigDecimal> categoryValues = createCategoryValuesMap();
 		Map<AssetCategory, BigDecimal> categoryShares = createCategorySharesMap(categoryValues);
 		List<AssetCategoryView> assetCategoryViews = createAssetCategoryViews(categoryValues, categoryShares);

@@ -12,13 +12,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.tciesla.finansista.view.AssetsOverviewController">
+<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/null" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.tciesla.finansista.view.AssetsOverviewController">
    <children>
       <VBox layoutX="14.0" layoutY="16.0" prefHeight="500.0" prefWidth="700.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox prefHeight="10.0" prefWidth="580.0" spacing="10.0">
                <children>
-                  <Label text="Assets value" />
+                  <Label text="Assets value:" />
                   <Label fx:id="assetsValueLabel" text="unknow">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
