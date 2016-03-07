@@ -203,7 +203,7 @@ public class AssetsOverviewController {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("AssetEditDialog.fxml"));
+			loader.setLocation(getClass().getResource("/AssetEditDialog.fxml"));
 			AnchorPane editDialog = loader.load();
 			
 			Stage dialogStage = new Stage();
@@ -235,7 +235,7 @@ public class AssetsOverviewController {
 		if (assetsTable.getSelectionModel().getSelectedItem() == null) return;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(FinansistaApplication.class.getResource("view/AssetEditDialog.fxml"));
+			loader.setLocation(FinansistaApplication.class.getResource("/AssetEditDialog.fxml"));
 			AnchorPane editDialog = loader.load();
 
 			Stage dialogStage = new Stage();
