@@ -24,7 +24,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.FinansistaApplication;
+import pl.tciesla.finansista.FinancierApplication;
 import pl.tciesla.finansista.dao.AssetDaoXml;
 import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.AssetCategory;
@@ -244,7 +244,7 @@ public class AssetsOverviewController {
 		if (assetsTable.getSelectionModel().getSelectedItem() == null) return;
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(FinansistaApplication.class.getResource("/AssetEditDialog.fxml"));
+			loader.setLocation(FinancierApplication.class.getResource("/AssetEditDialog.fxml"));
 			AnchorPane editDialog = loader.load();
 
 			Stage dialogStage = new Stage();
