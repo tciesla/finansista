@@ -1,9 +1,8 @@
-package pl.tciesla.finansista.dao.asset;
+package pl.tciesla.finansista.dao;
 
 import java.util.List;
 
-import pl.tciesla.finansista.dao.BaseDao;
-import pl.tciesla.finansista.model.asset.Asset;
+import pl.tciesla.finansista.model.Asset;
 
 public interface AssetDao extends BaseDao<Asset, Integer> {
 

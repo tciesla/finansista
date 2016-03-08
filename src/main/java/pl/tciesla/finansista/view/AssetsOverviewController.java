@@ -25,9 +25,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.FinansistaApplication;
-import pl.tciesla.finansista.dao.asset.AssetDaoXml;
-import pl.tciesla.finansista.model.asset.Asset;
-import pl.tciesla.finansista.model.asset.AssetCategory;
+import pl.tciesla.finansista.dao.AssetDaoXml;
+import pl.tciesla.finansista.model.Asset;
+import pl.tciesla.finansista.model.AssetCategory;
 
 public class AssetsOverviewController {
 	

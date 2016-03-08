@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.model.asset;
+package pl.tciesla.finansista.model;
 
 import java.util.LinkedList;
 import java.util.List;

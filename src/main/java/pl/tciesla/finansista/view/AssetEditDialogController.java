@@ -7,8 +7,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.model.asset.Asset;
-import pl.tciesla.finansista.model.asset.AssetCategory;
+import pl.tciesla.finansista.model.Asset;
+import pl.tciesla.finansista.model.AssetCategory;
 
 public class AssetEditDialogController {
 	
