@@ -10,14 +10,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import pl.tciesla.finansista.view.AssetsOverviewController;
-import pl.tciesla.finansista.view.ExpensesOverviewController;
 
 import java.io.IOException;
 
 public class FinansistaApplication extends Application {
 
 	private static final String WINDOW_TITLE = "Finansista";
-	private static final String EXPENSES_TAB_TITLE = "Expenses";
 	private static final String ASSETS_TAB_TITLE = "Assets";
 
 	public static void main(String[] args) {
@@ -28,7 +26,6 @@ public class FinansistaApplication extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		BorderPane rootLayoutPane = loadRootLayout();
 		TabPane tabPane = createTabPaneInRootLayout(rootLayoutPane);
-		loadExpensesOverviewTab(primaryStage, tabPane);
 		loadAssetsOverviewTab(primaryStage, tabPane);
 		createWindowAndShow(primaryStage, rootLayoutPane);
 	}
@@ -46,19 +43,6 @@ public class FinansistaApplication extends Application {
 		return tabPane;
 	}
 	
-	private void loadExpensesOverviewTab(Stage stage, TabPane tabPane) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/ExpensesOverview.fxml"));
-		AnchorPane expensesOverviewPane = loader.load();
-
-		Tab tab = new Tab(EXPENSES_TAB_TITLE);
-		tab.setContent(expensesOverviewPane);
-		tabPane.getTabs().add(tab);
-
-		ExpensesOverviewController controller = loader.getController();
-		controller.setStage(stage);
-	}
-
 	private void loadAssetsOverviewTab(Stage stage, TabPane tabPane) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/AssetsOverview.fxml"));
