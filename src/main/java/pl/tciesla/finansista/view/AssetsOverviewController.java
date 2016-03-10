@@ -206,9 +206,14 @@ public class AssetsOverviewController {
 	private void loadAssetsIntoAssetsTable() {
 		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
 	}
+
+    @FXML
+    private void handleCloseApplication() {
+        System.exit(0);
+    }
 	
 	@FXML
-	private void handleNewButtonClicked() {
+	private void handleNewAssetOperation() {
 		
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -240,7 +245,7 @@ public class AssetsOverviewController {
 	}
 	
 	@FXML
-	private void handleEditButtonClicked() {
+	private void handleEditAssetOperation() {
 		if (assetsTable.getSelectionModel().getSelectedItem() == null) return;
 		try {
 			FXMLLoader loader = new FXMLLoader();
@@ -272,7 +277,7 @@ public class AssetsOverviewController {
 	}
 
 	@FXML
-	private void handleDeleteButtonClicked() {
+	private void handleDeleteAssetOperation() {
 		int selectedAsset = assetsTable.getSelectionModel().getSelectedIndex();
 		if (selectedAsset != -1) { 
 			AssetDaoXml.getInstance().delete(selectedAsset);
