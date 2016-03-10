@@ -4,7 +4,6 @@ import static java.math.RoundingMode.HALF_UP;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -28,6 +27,7 @@ import pl.tciesla.finansista.FinancierApplication;
 import pl.tciesla.finansista.dao.AssetDaoXml;
 import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.AssetCategory;
+import pl.tciesla.finansista.util.StringUtils;
 
 public class AssetsOverviewController {
 	
@@ -60,6 +60,7 @@ public class AssetsOverviewController {
 	private PieChart categoriesValuePieChart;
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void initialize() {
 		initializeAssetsTableColumns();
 		initializeCategoriesTableColumns();
@@ -73,7 +74,8 @@ public class AssetsOverviewController {
 		assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// asset value column
-        assetValueColumn.setCellValueFactory(c -> new SimpleStringProperty(toCurrency(c.getValue().getValue())));
+        assetValueColumn.setCellValueFactory(c -> new SimpleStringProperty(
+                StringUtils.toCurrency(c.getValue().getValue())));
 		assetValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// asset category column
@@ -81,7 +83,8 @@ public class AssetsOverviewController {
 		assetCategoryColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// asset share column
-		assetShareColumn.setCellValueFactory(c -> c.getValue().share().asString());
+		assetShareColumn.setCellValueFactory(c -> new SimpleStringProperty(
+                StringUtils.toPercent(c.getValue().getShare())));
 		assetShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 	}
 	
@@ -91,11 +94,13 @@ public class AssetsOverviewController {
 		categoryNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// category value column
-        categoryValueColumn.setCellValueFactory(c -> new SimpleStringProperty(toCurrency(c.getValue().getValue())));
+        categoryValueColumn.setCellValueFactory(c -> new SimpleStringProperty(
+                StringUtils.toCurrency(c.getValue().getValue())));
 		categoryValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 		
 		// category share column
-		categoryShareColumn.setCellValueFactory(c -> c.getValue().share().asString());
+        categoryShareColumn.setCellValueFactory(c -> new SimpleStringProperty(
+                StringUtils.toPercent(c.getValue().getShare())));
 		categoryShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
 	}
 	
@@ -112,23 +117,15 @@ public class AssetsOverviewController {
 		// updates assetsValue label
 		BigDecimal assetsValue = assetsTable.getItems().stream()
 				.map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
-		assetsValueLabel.setText(toCurrency(assetsValue.setScale(2, HALF_UP)));
+		assetsValueLabel.setText(StringUtils.toCurrency(assetsValue.setScale(2, HALF_UP)));
 		
 		// updates shares in assets table
 		assetsTable.getItems().stream().forEach(asset -> {
 			BigDecimal value = asset.getValue();
 			BigDecimal share = value.divide(assetsValue, 4, HALF_UP);
-			BigDecimal percent = share.multiply(BigDecimal.valueOf(100));
-			asset.setShare(percent.setScale(2, HALF_UP));
+			asset.setShare(share);
 		});
 	}
-
-    private String toCurrency(BigDecimal value) {
-        NumberFormat currencyInstance = NumberFormat.getCurrencyInstance();
-        currencyInstance.setMinimumFractionDigits(2);
-        currencyInstance.setMaximumFractionDigits(2);
-        return currencyInstance.format(value);
-    }
 
     private void createOrUpdateCategoriesTable() {
 		Map<AssetCategory, BigDecimal> categoryValues = createCategoryValuesMap();
@@ -162,8 +159,7 @@ public class AssetsOverviewController {
 		categoryValues.keySet().stream().forEach(assetCategory -> {
 			BigDecimal categoryValue = categoryValues.get(assetCategory);
 			BigDecimal share = categoryValue.divide(assetsValue, 4, HALF_UP);
-			BigDecimal percent = share.multiply(BigDecimal.valueOf(100));
-			categoryShares.put(assetCategory, percent.setScale(2, HALF_UP));
+			categoryShares.put(assetCategory, share);
 		});
 		
 		return categoryShares;
@@ -194,13 +190,6 @@ public class AssetsOverviewController {
 			pieChartData.add(new PieChart.Data(view.getName(), view.getValue().doubleValue()))
 		);
 		categoriesValuePieChart.setData(pieChartData);
-		
-//		categoriesValuePieChart.getData().stream().forEach(data -> {
-//			String assetCategoryName = data.getName();
-//			String color = AssetCategoryColorMapper.getColor(assetCategoryName);
-//			data.getNode().setStyle("-fx-pie-color: " + color + ";");
-//		});
-		
 	}
 	
 	private void loadAssetsIntoAssetsTable() {
@@ -208,11 +197,13 @@ public class AssetsOverviewController {
 	}
 
     @FXML
+    @SuppressWarnings("unused")
     private void handleCloseApplication() {
         System.exit(0);
     }
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void handleNewAssetOperation() {
 		
 		try {
@@ -245,6 +236,7 @@ public class AssetsOverviewController {
 	}
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void handleEditAssetOperation() {
 		if (assetsTable.getSelectionModel().getSelectedItem() == null) return;
 		try {
@@ -277,6 +269,7 @@ public class AssetsOverviewController {
 	}
 
 	@FXML
+    @SuppressWarnings("unused")
 	private void handleDeleteAssetOperation() {
 		int selectedAsset = assetsTable.getSelectionModel().getSelectedIndex();
 		if (selectedAsset != -1) { 
@@ -288,10 +281,6 @@ public class AssetsOverviewController {
 	private void refreshAssetsInTable() {
 		assetsTable.getItems().clear();
 		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
-	}
-
-	public Stage getStage() {
-		return stage;
 	}
 
 	public void setStage(Stage stage) {

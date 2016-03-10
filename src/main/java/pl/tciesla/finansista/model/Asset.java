@@ -78,7 +78,12 @@ public class Asset {
 	public ObjectProperty<AssetCategory> category() {
 		return category;
 	}
-	
+
+    @XmlTransient
+    public BigDecimal getShare() {
+        return share.get();
+    }
+
 	public void setShare(BigDecimal share) {
 		this.share.set(share);
 	}

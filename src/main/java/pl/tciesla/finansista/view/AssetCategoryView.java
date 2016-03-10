@@ -34,6 +34,10 @@ public class AssetCategoryView {
 	public SimpleObjectProperty<BigDecimal> value() {
 		return value;
 	}
+
+    public BigDecimal getShare() {
+        return share.get();
+    }
 	
 	public void setShare(BigDecimal share) {
 		this.share.set(share);
