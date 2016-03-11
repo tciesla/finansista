@@ -1,14 +1,5 @@
 package pl.tciesla.finansista.view;
 
-import static java.math.RoundingMode.HALF_UP;
-
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -29,13 +20,22 @@ import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.AssetCategory;
 import pl.tciesla.finansista.util.StringUtils;
 
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import static java.math.RoundingMode.HALF_UP;
+
 public class AssetsOverviewController {
 	
 	private static final String CENTER_ALIGNMENT_STYLE = "-fx-alignment: CENTER;";
 
 	private Stage stage;
-	
-	@FXML
+
+    @FXML
 	private Label assetsValueLabel;
 	@FXML
 	private TableView<Asset> assetsTable;
@@ -58,7 +58,7 @@ public class AssetsOverviewController {
 	private TableColumn<AssetCategoryView, String> categoryShareColumn;
 	@FXML
 	private PieChart categoriesValuePieChart;
-	
+
 	@FXML
     @SuppressWarnings("unused")
 	private void initialize() {

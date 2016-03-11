@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import pl.tciesla.finansista.view.AssetsOverviewController;
 
 import java.io.IOException;
+import java.util.ResourceBundle;
 
 public class FinancierApplication extends Application {
 
@@ -26,7 +27,8 @@ public class FinancierApplication extends Application {
 	private Pane loadAssetsPane(Stage stage) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("/AssetsOverview.fxml"));
-		Pane assetsPane = loader.load();
+        loader.setResources(ResourceBundle.getBundle("Bundle"));
+        Pane assetsPane = loader.load();
 
 		AssetsOverviewController controller = loader.getController();
 		controller.setStage(stage);

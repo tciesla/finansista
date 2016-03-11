@@ -13,15 +13,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <BorderPane xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.tciesla.finansista.view.AssetsOverviewController">
    <center>
       <VBox spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <HBox prefHeight="10.0" prefWidth="580.0" spacing="10.0">
                <children>
-                  <Label text="Assets value:" />
-                  <Label fx:id="assetsValueLabel" text="unknow">
+                  <Label text="%assets.value.label" />
+                  <Label fx:id="assetsValueLabel" text="-">
                      <font>
                         <Font name="System Bold Italic" size="12.0" />
                      </font>
@@ -30,10 +29,10 @@
             </HBox>
             <TableView fx:id="assetsTable" prefHeight="219.0" prefWidth="680.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn fx:id="assetNameColumn" prefWidth="75.0" text="Asset" />
-                <TableColumn fx:id="assetValueColumn" prefWidth="75.0" text="Value" />
-                  <TableColumn fx:id="assetCategoryColumn" prefWidth="75.0" text="Category" />
-                  <TableColumn fx:id="assetShareColumn" prefWidth="75.0" text="Share" />
+                <TableColumn fx:id="assetNameColumn" prefWidth="75.0" text="%asset.label" />
+                <TableColumn fx:id="assetValueColumn" prefWidth="75.0" text="%value.label" />
+                  <TableColumn fx:id="assetCategoryColumn" prefWidth="75.0" text="%category.label" />
+                  <TableColumn fx:id="assetShareColumn" prefWidth="75.0" text="%share.label" />
               </columns>
                <columnResizePolicy>
                   <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -43,9 +42,9 @@
                <children>
                   <TableView fx:id="categoriesTable" prefHeight="200.0" HBox.hgrow="ALWAYS">
                     <columns>
-                      <TableColumn fx:id="categoryNameColumn" prefWidth="75.0" text="Category" />
-                      <TableColumn fx:id="categoryValueColumn" prefWidth="75.0" text="Value" />
-                        <TableColumn fx:id="categoryShareColumn" prefWidth="75.0" text="Share" />
+                      <TableColumn fx:id="categoryNameColumn" prefWidth="75.0" text="%category.label" />
+                      <TableColumn fx:id="categoryValueColumn" prefWidth="75.0" text="%value.label" />
+                        <TableColumn fx:id="categoryShareColumn" prefWidth="75.0" text="%share.label" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -63,16 +62,16 @@
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
-          <Menu mnemonicParsing="false" text="Application">
+          <Menu mnemonicParsing="false" text="%menu.application">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleCloseApplication" text="Close" />
+              <MenuItem mnemonicParsing="false" onAction="#handleCloseApplication" text="%submenu.close" />
             </items>
           </Menu>
-          <Menu mnemonicParsing="false" text="Operations">
+          <Menu mnemonicParsing="false" text="%menu.operations">
             <items>
-              <MenuItem mnemonicParsing="false" onAction="#handleNewAssetOperation" text="New" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleEditAssetOperation" text="Edit" />
-                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteAssetOperation" text="Delete" />
+              <MenuItem mnemonicParsing="false" onAction="#handleNewAssetOperation" text="%submenu.new.asset" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleEditAssetOperation" text="%submenu.edit.asset" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleDeleteAssetOperation" text="%submenu.delete.asset" />
             </items>
           </Menu>
         </menus>
