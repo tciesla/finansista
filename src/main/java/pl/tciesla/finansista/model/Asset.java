@@ -1,21 +1,20 @@
 package pl.tciesla.finansista.model;
 
-import java.math.BigDecimal;
-
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlType;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import java.math.BigDecimal;
+
 @XmlRootElement
 @XmlType(propOrder = {"name", "category", "value"})
 public class Asset {
 
-	private static final String INITIAL_NAME = "unknown";
+	private static final String INITIAL_NAME = "";
 
 	private Integer id;
 	private final StringProperty name;
@@ -63,10 +62,6 @@ public class Asset {
 		this.value.set(value);
 	}
 
-	public ObjectProperty<BigDecimal> value() {
-		return value;
-	}
-	
 	public AssetCategory getCategory() {
 		return category.get();
 	}
@@ -88,10 +83,6 @@ public class Asset {
 		this.share.set(share);
 	}
 	
-	public ObjectProperty<BigDecimal> share() {
-		return share;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -5,14 +5,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.view.AssetsOverviewController;
+import pl.tciesla.finansista.view.AssetsWindowController;
 
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class FinancierApplication extends Application {
+public class JustAssetsApplication extends Application {
 
-	private static final String WINDOW_TITLE = "Financier";
+	private static final String APPLICATION_NAME = "JustAssets";
 
 	public static void main(String[] args) {
 		launch(args);
@@ -25,21 +25,24 @@ public class FinancierApplication extends Application {
 	}
 
 	private Pane loadAssetsPane(Stage stage) throws IOException {
-		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("/AssetsOverview.fxml"));
-        loader.setResources(ResourceBundle.getBundle("Bundle"));
+        FXMLLoader loader = createLoader();
         Pane assetsPane = loader.load();
-
-		AssetsOverviewController controller = loader.getController();
+		AssetsWindowController controller = loader.getController();
 		controller.setStage(stage);
-
         return assetsPane;
 	}
 
-	private void createWindowAndShow(Stage stage, Pane pane) {
+    private FXMLLoader createLoader() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AssetsWindow.fxml"));
+        loader.setResources(ResourceBundle.getBundle("Bundle"));
+        return loader;
+    }
+
+    private void createWindowAndShow(Stage stage, Pane pane) {
 		Scene scene = new Scene(pane);
 		stage.setScene(scene);
-		stage.setTitle(WINDOW_TITLE);
+		stage.setTitle(APPLICATION_NAME);
 		stage.show();
 	}
 

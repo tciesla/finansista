@@ -1,9 +1,9 @@
 package pl.tciesla.finansista.view;
 
-import java.math.BigDecimal;
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
+
+import java.math.BigDecimal;
 
 public class AssetCategoryView {
 	
@@ -31,20 +31,12 @@ public class AssetCategoryView {
 		return value.get();
 	}
 	
-	public SimpleObjectProperty<BigDecimal> value() {
-		return value;
-	}
-
     public BigDecimal getShare() {
         return share.get();
     }
 	
 	public void setShare(BigDecimal share) {
 		this.share.set(share);
-	}
-	
-	public SimpleObjectProperty<BigDecimal> share() {
-		return share;
 	}
 
 }

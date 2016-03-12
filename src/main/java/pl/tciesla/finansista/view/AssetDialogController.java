@@ -1,8 +1,5 @@
 package pl.tciesla.finansista.view;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
@@ -10,7 +7,10 @@ import javafx.stage.Stage;
 import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.AssetCategory;
 
-public class AssetEditDialogController {
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+public class AssetDialogController {
 	
 	private Stage dialogStage;
 	private boolean okClicked = false;
@@ -24,11 +24,13 @@ public class AssetEditDialogController {
 	private ComboBox<AssetCategory> assetCategoryBox;
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void initialize() {
 		assetCategoryBox.getItems().setAll(AssetCategory.values());
 	}
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void handleOKButtonClicked() {
 		okClicked = true;
 		asset.setName(assetNameField.getText());
@@ -38,12 +40,10 @@ public class AssetEditDialogController {
 	}
 	
 	@FXML
+    @SuppressWarnings("unused")
 	private void handleCancelButtonClicked() {
+        okClicked = false;
 		dialogStage.close();
-	}
-
-	public Stage getDialogStage() {
-		return dialogStage;
 	}
 
 	public void setDialogStage(Stage dialogStage) {
@@ -52,10 +52,6 @@ public class AssetEditDialogController {
 
 	public boolean isOkClicked() {
 		return okClicked;
-	}
-
-	public void setOkClicked(boolean okClicked) {
-		this.okClicked = okClicked;
 	}
 
 	public Asset getAsset() {

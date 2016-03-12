@@ -11,10 +11,9 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.FinancierApplication;
 import pl.tciesla.finansista.dao.AssetDaoXml;
 import pl.tciesla.finansista.model.Asset;
 import pl.tciesla.finansista.model.AssetCategory;
@@ -22,44 +21,41 @@ import pl.tciesla.finansista.util.StringUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.math.RoundingMode.HALF_UP;
 
-public class AssetsOverviewController {
-	
+public class AssetsWindowController {
+
+    private static final int NUMBER_SCALE = 4;
 	private static final String CENTER_ALIGNMENT_STYLE = "-fx-alignment: CENTER;";
 
 	private Stage stage;
-
     @FXML
 	private Label assetsValueLabel;
-	@FXML
+    @FXML
 	private TableView<Asset> assetsTable;
-	@FXML
+    @FXML
 	private TableColumn<Asset, String> assetNameColumn;
-	@FXML
+    @FXML
 	private TableColumn<Asset, String> assetValueColumn;
-	@FXML
+    @FXML
 	private TableColumn<Asset, String> assetCategoryColumn;
-	@FXML
-	private TableColumn<Asset, String> assetShareColumn;
-	
-	@FXML
-	private TableView<AssetCategoryView> categoriesTable;
-	@FXML
-	private TableColumn<AssetCategoryView, String> categoryNameColumn;
-	@FXML
-	private TableColumn<AssetCategoryView, String> categoryValueColumn;
-	@FXML
-	private TableColumn<AssetCategoryView, String> categoryShareColumn;
-	@FXML
-	private PieChart categoriesValuePieChart;
 
 	@FXML
+	private TableColumn<Asset, String> assetShareColumn;
+    @FXML
+	private TableView<AssetCategoryView> categoriesTable;
+    @FXML
+	private TableColumn<AssetCategoryView, String> categoryNameColumn;
+    @FXML
+	private TableColumn<AssetCategoryView, String> categoryValueColumn;
+    @FXML
+	private TableColumn<AssetCategoryView, String> categoryShareColumn;
+    @FXML
+	private PieChart categoriesValuePieChart;
+
+    @FXML
     @SuppressWarnings("unused")
 	private void initialize() {
 		initializeAssetsTableColumns();
@@ -69,42 +65,58 @@ public class AssetsOverviewController {
 	}
 
 	private void initializeAssetsTableColumns() {
-		// asset name column
-		assetNameColumn.setCellValueFactory(c -> c.getValue().name());
-		assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// asset value column
+        initializeAssetNameColumn();
+        initializeAssetValueColumn();
+        initializeAssetCategoryColumn();
+        initializeAssetShareColumn();
+	}
+
+    private void initializeAssetNameColumn() {
+        assetNameColumn.setCellValueFactory(c -> c.getValue().name());
+        assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeAssetValueColumn() {
         assetValueColumn.setCellValueFactory(c -> new SimpleStringProperty(
                 StringUtils.toCurrency(c.getValue().getValue())));
-		assetValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// asset category column
-		assetCategoryColumn.setCellValueFactory(c -> c.getValue().category().asString());
-		assetCategoryColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// asset share column
-		assetShareColumn.setCellValueFactory(c -> new SimpleStringProperty(
+        assetValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeAssetCategoryColumn() {
+        assetCategoryColumn.setCellValueFactory(c -> c.getValue().category().asString());
+        assetCategoryColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeAssetShareColumn() {
+        assetShareColumn.setCellValueFactory(c -> new SimpleStringProperty(
                 StringUtils.toPercent(c.getValue().getShare())));
-		assetShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+        assetShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeCategoriesTableColumns() {
+        initializeCategoryNameColumn();
+        initializeCategoryValueColumn();
+        initializeCategoryShareColumn();
 	}
-	
-	private void initializeCategoriesTableColumns() {
-		// category name column
-		categoryNameColumn.setCellValueFactory(c -> c.getValue().name());
-		categoryNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// category value column
+
+    private void initializeCategoryNameColumn() {
+        categoryNameColumn.setCellValueFactory(c -> c.getValue().name());
+        categoryNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeCategoryValueColumn() {
         categoryValueColumn.setCellValueFactory(c -> new SimpleStringProperty(
                 StringUtils.toCurrency(c.getValue().getValue())));
-		categoryValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-		
-		// category share column
+        categoryValueColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void initializeCategoryShareColumn() {
         categoryShareColumn.setCellValueFactory(c -> new SimpleStringProperty(
                 StringUtils.toPercent(c.getValue().getShare())));
-		categoryShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
-	}
-	
-	private void addAssetsTableListeners() {
+        categoryShareColumn.setStyle(CENTER_ALIGNMENT_STYLE);
+    }
+
+    private void addAssetsTableListeners() {
 		assetsTable.getItems().addListener((ListChangeListener.Change<? extends Asset> c) -> {
 			createOrUpdateAssetsValueAndShares();
 			createOrUpdateCategoriesTable();
@@ -113,16 +125,17 @@ public class AssetsOverviewController {
 	}
 	
 	private void createOrUpdateAssetsValueAndShares() {
+
+        BigDecimal assetsValue = assetsTable.getItems().stream()
+                .map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
 		
 		// updates assetsValue label
-		BigDecimal assetsValue = assetsTable.getItems().stream()
-				.map(Asset::getValue).reduce(BigDecimal.ZERO, BigDecimal::add);
-		assetsValueLabel.setText(StringUtils.toCurrency(assetsValue.setScale(2, HALF_UP)));
+		assetsValueLabel.setText(StringUtils.toCurrency(assetsValue));
 		
 		// updates shares in assets table
 		assetsTable.getItems().stream().forEach(asset -> {
 			BigDecimal value = asset.getValue();
-			BigDecimal share = value.divide(assetsValue, 4, HALF_UP);
+            BigDecimal share = value.divide(assetsValue, NUMBER_SCALE, HALF_UP);
 			asset.setShare(share);
 		});
 	}
@@ -158,7 +171,7 @@ public class AssetsOverviewController {
 		Map<AssetCategory, BigDecimal> categoryShares = new HashMap<>();
 		categoryValues.keySet().stream().forEach(assetCategory -> {
 			BigDecimal categoryValue = categoryValues.get(assetCategory);
-			BigDecimal share = categoryValue.divide(assetsValue, 4, HALF_UP);
+			BigDecimal share = categoryValue.divide(assetsValue, NUMBER_SCALE, HALF_UP);
 			categoryShares.put(assetCategory, share);
 		});
 		
@@ -184,16 +197,18 @@ public class AssetsOverviewController {
 	}
 	
 	private void createOrUpdateCategoriesPieChart() {
-		
-		ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-		categoriesTable.getItems().stream().forEach(view ->
-			pieChartData.add(new PieChart.Data(view.getName(), view.getValue().doubleValue()))
-		);
-		categoriesValuePieChart.setData(pieChartData);
+		ObservableList<PieChart.Data> categoriesChartData = FXCollections.observableArrayList();
+		categoriesTable.getItems().stream().forEach(categoryView -> {
+            String name = categoryView.getName();
+            double value = categoryView.getValue().doubleValue();
+            categoriesChartData.add(new PieChart.Data(name, value));
+        });
+		categoriesValuePieChart.setData(categoriesChartData);
 	}
 	
 	private void loadAssetsIntoAssetsTable() {
-		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
+        List<Asset> assets = AssetDaoXml.getInstance().fetchAll();
+        assetsTable.getItems().addAll(assets);
 	}
 
     @FXML
@@ -207,66 +222,81 @@ public class AssetsOverviewController {
 	private void handleNewAssetOperation() {
 		
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/AssetEditDialog.fxml"));
-			AnchorPane editDialog = loader.load();
-			
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("New asset");
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(stage);
-			
-			AssetEditDialogController controller = loader.getController();
+            FXMLLoader loader = createLoader();
+			Pane newAssetDialogPane = loader.load();
+            Stage dialogStage = createDialogStage("asset.add.dialog.title");
+			AssetDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 			controller.setAsset(new Asset());
-			
-			Scene scene = new Scene(editDialog);
-			dialogStage.setScene(scene);
-			dialogStage.showAndWait();
-			
-			if (controller.isOkClicked()) {
-				AssetDaoXml.getInstance().persist(controller.getAsset());
-				refreshAssetsInTable();
-			}
-			
-		} catch (IOException e) {
+
+            showAssetDialogAndWait(newAssetDialogPane, dialogStage);
+            executeAddAssetIfOkClicked(controller);
+
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	@FXML
+
+    private void executeAddAssetIfOkClicked(AssetDialogController controller) {
+        if (controller.isOkClicked()) {
+            Asset asset = controller.getAsset();
+            AssetDaoXml.getInstance().persist(asset);
+            refreshAssetsInTable();
+        }
+    }
+
+    @FXML
     @SuppressWarnings("unused")
 	private void handleEditAssetOperation() {
 		if (assetsTable.getSelectionModel().getSelectedItem() == null) return;
 		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(FinancierApplication.class.getResource("/AssetEditDialog.fxml"));
-			AnchorPane editDialog = loader.load();
-
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("New asset");
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(stage);
-
-			AssetEditDialogController controller = loader.getController();
+            FXMLLoader loader = createLoader();
+            Pane editAssetDialogPane = loader.load();
+            Stage dialogStage = createDialogStage("asset.edit.dialog.title");
+			AssetDialogController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
-			controller.setAsset(assetsTable.getSelectionModel().getSelectedItem());
+            Asset selectedAsset = assetsTable.getSelectionModel().getSelectedItem();
+            controller.setAsset(selectedAsset);
 
-			Scene scene = new Scene(editDialog);
-			dialogStage.setScene(scene);
-			dialogStage.showAndWait();
+            showAssetDialogAndWait(editAssetDialogPane, dialogStage);
+            executeEditAssetIfOkClicked(controller);
 
-			if (controller.isOkClicked()) {
-				AssetDaoXml.getInstance().update(controller.getAsset());
-				refreshAssetsInTable();
-			}
-
-		} catch (IOException e) {
+        } catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+    private void executeEditAssetIfOkClicked(AssetDialogController controller) {
+        if (controller.isOkClicked()) {
+            Asset modifiedAsset = controller.getAsset();
+            AssetDaoXml.getInstance().update(modifiedAsset);
+            refreshAssetsInTable();
+        }
+    }
+
+    private FXMLLoader createLoader() {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/AssetDialog.fxml"));
+        loader.setResources(ResourceBundle.getBundle("Bundle"));
+        return loader;
+    }
+
+    private Stage createDialogStage(String dialogTitleKey) {
+        Stage dialogStage = new Stage();
+        ResourceBundle bundle = ResourceBundle.getBundle("Bundle");
+        dialogStage.setTitle(bundle.getString(dialogTitleKey));
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.initOwner(stage);
+        return dialogStage;
+    }
+
+    private void showAssetDialogAndWait(Pane newAssetDialogPane, Stage dialogStage) {
+        Scene scene = new Scene(newAssetDialogPane);
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
+    }
 
 	@FXML
     @SuppressWarnings("unused")
@@ -280,7 +310,8 @@ public class AssetsOverviewController {
 
 	private void refreshAssetsInTable() {
 		assetsTable.getItems().clear();
-		assetsTable.getItems().addAll(AssetDaoXml.getInstance().fetchAll());
+        List<Asset> assets = AssetDaoXml.getInstance().fetchAll();
+        assetsTable.getItems().addAll(assets);
 	}
 
 	public void setStage(Stage stage) {
