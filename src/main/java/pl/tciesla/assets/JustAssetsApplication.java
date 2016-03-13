@@ -1,11 +1,11 @@
-package pl.tciesla.finansista;
+package pl.tciesla.assets;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.view.AssetsWindowController;
+import pl.tciesla.assets.view.AssetsWindowController;
 
 import java.io.IOException;
 import java.util.ResourceBundle;

@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.model;
+package pl.tciesla.assets.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;

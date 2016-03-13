@@ -3,10 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>pl.tciesla</groupId>
-    <artifactId>finansista</artifactId>
+    <artifactId>just-assets</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>finansista</name>
+    <name>just-assets</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +31,7 @@
         </plugins>
         <resources>
             <resource>
-                <directory>src/main/java/pl/tciesla/finansista/view</directory>
+                <directory>src/main/java/pl/tciesla/assets/view</directory>
                 <includes>
                     <include>*.fxml</include>
                 </includes>

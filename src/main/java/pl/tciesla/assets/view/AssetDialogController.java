@@ -1,11 +1,11 @@
-package pl.tciesla.finansista.view;
+package pl.tciesla.assets.view;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetCategory;
+import pl.tciesla.assets.model.Asset;
+import pl.tciesla.assets.model.AssetCategory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

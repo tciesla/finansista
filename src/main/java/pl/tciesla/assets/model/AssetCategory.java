@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.model;
+package pl.tciesla.assets.model;
 
 import java.util.ResourceBundle;
 

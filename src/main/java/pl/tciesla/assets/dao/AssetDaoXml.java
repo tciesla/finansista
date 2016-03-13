@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.dao;
+package pl.tciesla.assets.dao;
 
 import java.io.File;
 import java.util.List;
@@ -9,8 +9,8 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetsWrapper;
+import pl.tciesla.assets.model.Asset;
+import pl.tciesla.assets.model.AssetsWrapper;
 
 public class AssetDaoXml implements AssetDao {
 	

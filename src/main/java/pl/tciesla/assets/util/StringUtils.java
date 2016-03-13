@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.util;
+package pl.tciesla.assets.util;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;

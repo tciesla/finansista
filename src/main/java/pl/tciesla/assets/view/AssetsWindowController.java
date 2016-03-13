@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.view;
+package pl.tciesla.assets.view;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -14,10 +14,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import pl.tciesla.finansista.dao.AssetDaoXml;
-import pl.tciesla.finansista.model.Asset;
-import pl.tciesla.finansista.model.AssetCategory;
-import pl.tciesla.finansista.util.StringUtils;
+import pl.tciesla.assets.dao.AssetDaoXml;
+import pl.tciesla.assets.model.Asset;
+import pl.tciesla.assets.model.AssetCategory;
+import pl.tciesla.assets.util.StringUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;

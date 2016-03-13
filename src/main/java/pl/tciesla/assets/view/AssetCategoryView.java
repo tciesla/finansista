@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.view;
+package pl.tciesla.assets.view;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;

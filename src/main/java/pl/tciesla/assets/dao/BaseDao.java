@@ -1,4 +1,4 @@
-package pl.tciesla.finansista.dao;
+package pl.tciesla.assets.dao;
 
 import java.util.List;
 
