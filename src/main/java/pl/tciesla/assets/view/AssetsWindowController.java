@@ -72,7 +72,7 @@ public class AssetsWindowController {
 	}
 
     private void initializeAssetNameColumn() {
-        assetNameColumn.setCellValueFactory(c -> c.getValue().name());
+        assetNameColumn.setCellValueFactory(c -> c.getValue().nameProperty());
         assetNameColumn.setStyle(CENTER_ALIGNMENT_STYLE);
     }
 
@@ -83,7 +83,7 @@ public class AssetsWindowController {
     }
 
     private void initializeAssetCategoryColumn() {
-        assetCategoryColumn.setCellValueFactory(c -> c.getValue().category().asString());
+        assetCategoryColumn.setCellValueFactory(c -> c.getValue().categoryProperty().asString());
         assetCategoryColumn.setStyle(CENTER_ALIGNMENT_STYLE);
     }
 

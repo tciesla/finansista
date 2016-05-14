@@ -1,9 +1,6 @@
 package pl.tciesla.assets.model;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -16,70 +13,71 @@ public class Asset {
 
 	private static final String INITIAL_NAME = "";
 
-	private Integer id;
-	private final StringProperty name;
-	private final ObjectProperty<BigDecimal> value;
-	private final ObjectProperty<AssetCategory> category;
-	private final ObjectProperty<BigDecimal> share;
-	
-	public Asset() {
-		this(INITIAL_NAME, BigDecimal.ZERO, AssetCategory.CASH);
-	}
+	private final IntegerProperty id = new SimpleIntegerProperty(this, "id");
+	private final StringProperty name = new SimpleStringProperty(this, "name", INITIAL_NAME);
+	private final ObjectProperty<AssetCategory> category = new SimpleObjectProperty<>(this, "category");
+	private final ObjectProperty<BigDecimal> value = new SimpleObjectProperty<>(this, "value", BigDecimal.ZERO);
+	private final ObjectProperty<BigDecimal> share = new SimpleObjectProperty<>(this, "share", BigDecimal.ZERO);
 
-	public Asset(String name, BigDecimal value, AssetCategory category) {
-		this.name = new SimpleStringProperty(name);
-		this.value = new SimpleObjectProperty<>(value);
-		this.category = new SimpleObjectProperty<>(category);
-		this.share = new SimpleObjectProperty<>(BigDecimal.ZERO);
-	}
+    public final IntegerProperty idProperty() {
+        return id;
+    }
 
 	@XmlTransient
-	public Integer getId() {
-		return id;
+	public final Integer getId() {
+		return id.get();
 	}
 
-	public void setId(Integer id) {
-		this.id = id;
+	public final void setId(Integer id) {
+		this.id.set(id);
 	}
 
-	public String getName() {
+    public final StringProperty nameProperty() {
+        return name;
+    }
+
+	public final String getName() {
 		return name.get();
 	}
 
-	public void setName(String name) {
+	public final void setName(String name) {
 		this.name.set(name);
 	}
 
-	public StringProperty name() {
-		return name;
-	}
+    public final ObjectProperty<AssetCategory> categoryProperty() {
+        return category;
+    }
 
-	public BigDecimal getValue() {
+    public final AssetCategory getCategory() {
+        return category.get();
+    }
+
+    public final void setCategory(AssetCategory category) {
+        this.category.set(category);
+    }
+
+    public final ObjectProperty<BigDecimal> valueProperty() {
+        return value;
+    }
+
+	public final BigDecimal getValue() {
 		return value.get();
 	}
 
-	public void setValue(BigDecimal value) {
+	public final void setValue(BigDecimal value) {
 		this.value.set(value);
 	}
 
-	public AssetCategory getCategory() {
-		return category.get();
-	}
-	
-	public void setCategory(AssetCategory category) {
-		this.category.set(category);
-	}
-	
-	public ObjectProperty<AssetCategory> category() {
-		return category;
-	}
+    public final ObjectProperty<BigDecimal> shareProperty() {
+        return share;
+    }
 
     @XmlTransient
-    public BigDecimal getShare() {
+    public final BigDecimal getShare() {
         return share.get();
     }
 
-	public void setShare(BigDecimal share) {
+	public final void setShare(BigDecimal share) {
 		this.share.set(share);
 	}
 	
